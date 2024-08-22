@@ -42,6 +42,7 @@ public class SellerDaoJDBC implements SellerDao{
 
 	
 	//implementando o metodo atraves de uma operação sql e encontrar o primeiro que corresponde ao id
+	//agora meu metodo esta bem mais inchuto
 	@Override
 	public Seller findById(Integer id) {
 		
@@ -63,17 +64,9 @@ public class SellerDaoJDBC implements SellerDao{
 			if(rs.next()) { //verificando se existe linha
 				//resultSet tras os dados em forma de tabela porem estamos trabalhando com classe, essa classe é responsavel por pegar a nossa tabela e transformar em objeto
 				
-				//instanciando os objetos e atribuindo os valores chegando do banco para a minha classes
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId"));
-				dep.setName(rs.getString("DepName"));
-				Seller seller = new Seller();
-				seller.setId(rs.getInt("Id"));
-				seller.setName(rs.getString("Name"));
-				seller.setEmail(rs.getString("Email"));
-				seller.setBirthDate(rs.getDate("BirthDate"));
-				seller.setBaseSalary(rs.getDouble("BaseSalary"));
-				seller.setDepartment(dep);
+				//criando variaveis e chamando os metodos para instanciar
+				Department dep = instantiateDepartment(rs);
+				Seller seller = instantiateSeller(rs, dep);
 				return seller;
 			}
 			
@@ -86,6 +79,30 @@ public class SellerDaoJDBC implements SellerDao{
 			DB.closeStatement(ps);
 			DB.closeResultSet(rs);
 		}
+	}
+
+	//metodo para instanciar o seller pegando os valores retornados no resultSet
+	//e passando o dep tambem, como ja tratei a exception em findById eu apenas propago 
+	//a exception que pode gerar ao consultar o resultSet
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(rs.getInt("Id"));
+		seller.setName(rs.getString("Name"));
+		seller.setEmail(rs.getString("Email"));
+		seller.setBirthDate(rs.getDate("BirthDate"));
+		seller.setBaseSalary(rs.getDouble("BaseSalary"));
+		seller.setDepartment(dep);
+		return seller;
+	}
+
+	//metodos para instanciar os meus objetos (department, seller)
+	//o acesso do meu resultSet pode gerar uma exception
+	//na minha classe findById ja esta tratando da exception entao eu simplesmente propago a exception
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));
+		dep.setName(rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override
