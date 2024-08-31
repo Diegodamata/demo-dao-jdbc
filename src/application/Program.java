@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,7 +39,7 @@ public class Program {
 			System.out.println(s);
 		}
 		
-		/*System.out.println("\n=== TEST 4: Insert ===");
+		System.out.println("\n=== TEST 4: Insert ===");
 		
 		Seller newSeller = new Seller(7, "Marcos", "marcos@gmail.com", new Date(), 3500.0, department);
 		sellerDao.insert(newSeller);
@@ -48,7 +49,7 @@ public class Program {
 		seller = sellerDao.findById(2);
 		seller.setName("Diego Pontes");
 		sellerDao.update(seller);
-		System.out.println("Update completado!");*/
+		System.out.println("Update completado!");
 		
 		
 		System.out.println("\n=== TEST 5: Delete ===");
